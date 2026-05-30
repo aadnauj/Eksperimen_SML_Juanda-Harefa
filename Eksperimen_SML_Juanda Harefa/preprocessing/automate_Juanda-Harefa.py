@@ -1,21 +1,3 @@
-"""
-automate_Juanda-Harefa.py
-=========================
-File ini berisi fungsi-fungsi untuk melakukan preprocessing dataset
-secara otomatis sehingga mengembalikan data yang siap dilatih (X_train, X_test, y_train, y_test).
-
-Tahapan preprocessing:
-    1. Load Dataset
-    2. Drop Kolom Tidak Relevan
-    3. Cek & Tangani Missing Values
-    4. Hapus Data Duplikat
-    5. Deteksi & Tangani Outlier (IQR Capping)
-    6. Encoding Data Kategorikal (LabelEncoder)
-    7. Binning (Age & Balance)
-    8. Normalisasi Fitur (MinMaxScaler)
-    9. Split Data (Train & Test)
-"""
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
