@@ -31,9 +31,7 @@ jobs:
           MLFLOW_TRACKING_URI: https://dagshub.com/aadnauj/Eksperimen_SML_Juanda-Harefa.mlflow
           MLFLOW_TRACKING_USERNAME: aadnauj
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
-          DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-        run: |
-          mlflow run Workflow-CI/MLProject --env-manager=local -P n_estimators=100 -P max_depth=10 -P random_state=42 -P test_size=0.2
+        run: mlflow run Workflow-CI/MLProject --env-manager=local -P n_estimators=100 -P max_depth=10 -P random_state=42 -P test_size=0.2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -49,12 +47,10 @@ jobs:
           MLFLOW_TRACKING_URI: https://dagshub.com/aadnauj/Eksperimen_SML_Juanda-Harefa.mlflow
           MLFLOW_TRACKING_USERNAME: aadnauj
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
-        run: |
-          mlflow models build-docker --model-uri "models:/RandomForest_WorkflowCI/latest" --name "aadnauj/workflow-ci:latest" --env-manager=local
+        run: mlflow models build-docker --model-uri "models:/RandomForest_WorkflowCI/latest" --name "aadnauj/workflow-ci:latest" --env-manager=local
 
       - name: Push Docker Image to Docker Hub
-        run: |
-          docker push aadnauj/workflow-ci:latest
+        run: docker push aadnauj/workflow-ci:latest
 
       - name: Upload Training Artifacts
         uses: actions/upload-artifact@v4
