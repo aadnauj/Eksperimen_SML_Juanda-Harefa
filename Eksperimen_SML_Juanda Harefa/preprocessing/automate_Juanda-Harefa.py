@@ -10,16 +10,6 @@ from sklearn.model_selection import train_test_split
 # FUNGSI 1: LOAD DATASET
 # ============================================================
 def load_data(file_id: str = None, filepath: str = None) -> pd.DataFrame:
-    """
-    Load dataset dari Google Drive (file_id) atau path lokal (filepath).
-
-    Parameters:
-        file_id  (str): ID file Google Drive
-        filepath (str): Path file lokal (.csv)
-
-    Returns:
-        pd.DataFrame: Raw dataset
-    """
     if file_id:
         url = f"https://drive.google.com/uc?id={file_id}"
         data = pd.read_csv(url)
@@ -39,16 +29,6 @@ def load_data(file_id: str = None, filepath: str = None) -> pd.DataFrame:
 # ============================================================
 def drop_irrelevant_columns(data: pd.DataFrame,
                              columns: list = None) -> pd.DataFrame:
-    """
-    Menghapus kolom yang tidak relevan untuk training.
-
-    Parameters:
-        data    (pd.DataFrame): Dataset
-        columns (list)        : Daftar kolom yang akan dihapus
-
-    Returns:
-        pd.DataFrame: Dataset tanpa kolom yang dihapus
-    """
     if columns is None:
         columns = ['RowNumber', 'CustomerId', 'Surname']
 
@@ -63,17 +43,6 @@ def drop_irrelevant_columns(data: pd.DataFrame,
 # FUNGSI 3: TANGANI MISSING VALUES
 # ============================================================
 def handle_missing_values(data: pd.DataFrame) -> pd.DataFrame:
-    """
-    Mengecek dan menangani missing values.
-    - Kolom numerik  → diisi dengan median
-    - Kolom kategori → diisi dengan modus
-
-    Parameters:
-        data (pd.DataFrame): Dataset
-
-    Returns:
-        pd.DataFrame: Dataset tanpa missing values
-    """
     total_missing = data.isnull().sum().sum()
     print(f"✅ Total missing values ditemukan: {total_missing}")
 
@@ -94,15 +63,6 @@ def handle_missing_values(data: pd.DataFrame) -> pd.DataFrame:
 # FUNGSI 4: HAPUS DATA DUPLIKAT
 # ============================================================
 def remove_duplicates(data: pd.DataFrame) -> pd.DataFrame:
-    """
-    Mendeteksi dan menghapus baris duplikat.
-
-    Parameters:
-        data (pd.DataFrame): Dataset
-
-    Returns:
-        pd.DataFrame: Dataset tanpa duplikat
-    """
     before = data.shape[0]
     data = data.drop_duplicates()
     after = data.shape[0]
@@ -117,17 +77,6 @@ def remove_duplicates(data: pd.DataFrame) -> pd.DataFrame:
 def handle_outliers(data: pd.DataFrame,
                     target_col: str = 'Exited',
                     visualize: bool = False) -> pd.DataFrame:
-    """
-    Mendeteksi dan menangani outlier menggunakan metode IQR (capping/winsorizing).
-
-    Parameters:
-        data        (pd.DataFrame): Dataset
-        target_col  (str)         : Kolom target yang dikecualikan
-        visualize   (bool)        : Tampilkan boxplot jika True
-
-    Returns:
-        pd.DataFrame: Dataset dengan outlier yang sudah ditangani
-    """
     num_cols = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
     num_cols = [c for c in num_cols if c != target_col]
 
@@ -162,16 +111,6 @@ def handle_outliers(data: pd.DataFrame,
 # ============================================================
 def encode_categorical(data: pd.DataFrame,
                         columns: list = None) -> pd.DataFrame:
-    """
-    Mengubah kolom kategorikal menjadi numerik menggunakan LabelEncoder.
-
-    Parameters:
-        data    (pd.DataFrame): Dataset
-        columns (list)        : Kolom kategorikal yang akan di-encode
-
-    Returns:
-        pd.DataFrame: Dataset dengan kolom ter-encode
-    """
     if columns is None:
         columns = ['Geography', 'Gender']
 
@@ -189,17 +128,6 @@ def encode_categorical(data: pd.DataFrame,
 # FUNGSI 7: BINNING
 # ============================================================
 def apply_binning(data: pd.DataFrame) -> pd.DataFrame:
-    """
-    Mengelompokkan kolom Age dan Balance ke dalam kategori (binning).
-    - Age    → Muda / Dewasa / Senior / Lansia
-    - Balance → Zero / Low / Medium / High
-
-    Parameters:
-        data (pd.DataFrame): Dataset
-
-    Returns:
-        pd.DataFrame: Dataset dengan kolom baru Age_Group & Balance_Group
-    """
     # Binning Age
     if 'Age' in data.columns:
         age_bins   = [0, 30, 45, 60, 100]
@@ -233,19 +161,6 @@ def split_and_normalize(data: pd.DataFrame,
                          target_col: str = 'Exited',
                          test_size: float = 0.2,
                          random_state: int = 42):
-    """
-    Memisahkan fitur & target, lalu melakukan normalisasi MinMaxScaler
-    dan split data train/test.
-
-    Parameters:
-        data         (pd.DataFrame): Dataset bersih
-        target_col   (str)         : Nama kolom target
-        test_size    (float)       : Proporsi data test (default 0.2)
-        random_state (int)         : Random seed
-
-    Returns:
-        X_train, X_test, y_train, y_test (np.ndarray)
-    """
     X = data.drop(columns=[target_col])
     y = data[target_col]
 
@@ -274,21 +189,6 @@ def run_preprocessing(file_id: str = None,
                        test_size: float = 0.2,
                        random_state: int = 42,
                        visualize_outlier: bool = False):
-    """
-    Fungsi utama yang menjalankan seluruh pipeline preprocessing
-    secara otomatis dari load data hingga data siap dilatih.
-
-    Parameters:
-        file_id          (str)  : ID file Google Drive
-        filepath         (str)  : Path file lokal
-        target_col       (str)  : Nama kolom target
-        test_size        (float): Proporsi data test
-        random_state     (int)  : Random seed
-        visualize_outlier(bool) : Tampilkan boxplot outlier
-
-    Returns:
-        X_train, X_test, y_train, y_test
-    """
     print("=" * 55)
     print("  AUTOMATE PREPROCESSING - Juanda Harefa")
     print("=" * 55)
