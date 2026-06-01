@@ -193,29 +193,21 @@ def run_preprocessing(file_id: str = None,
     print("  AUTOMATE PREPROCESSING - Juanda Harefa")
     print("=" * 55)
 
-    # Step 1: Load
     data = load_data(file_id=file_id, filepath=filepath)
 
-    # Step 2: Drop kolom tidak relevan
     data = drop_irrelevant_columns(data)
 
-    # Step 3: Missing values
     data = handle_missing_values(data)
 
-    # Step 4: Hapus duplikat
     data = remove_duplicates(data)
 
-    # Step 5: Outlier
     data = handle_outliers(data, target_col=target_col,
                            visualize=visualize_outlier)
 
-    # Step 6: Encoding kategorikal
     data = encode_categorical(data)
 
-    # Step 7: Binning
     data = apply_binning(data)
 
-    # Step 8: Split & Normalisasi
     X_train, X_test, y_train, y_test = split_and_normalize(
         data,
         target_col=target_col,
@@ -231,11 +223,7 @@ def run_preprocessing(file_id: str = None,
     return X_train, X_test, y_train, y_test
 
 
-# ============================================================
-# MAIN — jalankan langsung sebagai script
-# ============================================================
 if __name__ == "__main__":
-    # Ganti file_id dengan ID Google Drive dataset kamu
     FILE_ID = "19IfOP0QmCHccMu8A6B2fCUpFqZwCxuzO"
 
     X_train, X_test, y_train, y_test = run_preprocessing(
@@ -243,7 +231,7 @@ if __name__ == "__main__":
         target_col='Exited',
         test_size=0.2,
         random_state=42,
-        visualize_outlier=False   # Set True untuk lihat boxplot
+        visualize_outlier=False  
     )
 
     print(f"\nX_train shape : {X_train.shape}")
